@@ -116,3 +116,28 @@ Streamlit Cloud → New app → this repo → Main file path: `hail_reliability_
     active, the correction applies consistently to design angles, stuck angles, insurance,
     developer risk, lookup curves, and vulnerability curves, and is recorded in captions,
     the parameter summary, and every CSV export.
+
+## v6 changes (`hail_reliability_v6.py`)
+
+- **Texas reference site relocated**: "Central Texas" (31.5, −99.2) → **"Texas Extreme"
+  (32.6, −100.3)** — the TX grid point where A [60°/77°] has the largest advantage over
+  B [60°/75°] (~1.99 ¢/W vs 1.45 at the old site; near Snyder, one of the VDE study sites).
+- **Value-of-unreliability table** below the key-site stacked bars (added insurance + added
+  owner risk per site × species).
+- **Common Y-axis toggle** on the key-site cost-composition charts (Altair-rendered).
+- **Darker/thicker state lines** on the A-vs-B comparison maps.
+- **Portfolio A default** → [52°, 60°, 77°].
+
+## v7 changes (`hail_reliability_v7.py`)
+
+- **Insurer Tail Reliability (P90)** — new sidebar section, off by default. Event-level stow
+  fraction is modeled as a Gaussian around each portfolio's mean reliability; when enabled the
+  **insurance layer only** is priced at a lower percentile (P75/P90/P95/P99 selectable,
+  default P90 = mean − 1.2816σ), while **developer/owner risk stays at mean reliability**
+  (developers hold the average risk; insurers underwrite the tail).
+  - Per-portfolio σ sliders. Defaults: **A σ = 2.0** (tail-fit to Array field data: 230 stow
+    events, 2 below 95% → P(X<95) = 0.87% → σ ≈ 1.98; P90 ≈ 97.2% at a 99.7% mean) and
+    **B σ = 4.0** (no public NXT distribution data — claims censored below the ~5% deductible;
+    wider uncertainty; P90 ≈ 84.9% at a 90% mean).
+  - Toggle-off reproduces v6 behavior exactly (verified bit-identical).
+  - Recorded in the comparison caption, parameter summary, and comparison CSV export.
